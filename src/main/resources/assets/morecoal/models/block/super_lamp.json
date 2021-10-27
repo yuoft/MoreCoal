@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"tex": "morecoal:block/super_lamp",
+		"particle": "morecoal:block/super_lamp"
+	},
+	"elements": [
+		{
+			"name": "lantern",
+			"from": [4, 2, 4],
+			"to": [12, 14, 12],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 12], "texture": "#tex"},
+				"east": {"uv": [0, 0, 8, 12], "texture": "#tex"},
+				"south": {"uv": [0, 0, 8, 12], "texture": "#tex"},
+				"west": {"uv": [0, 0, 8, 12], "texture": "#tex"},
+				"up": {"uv": [8, 0, 16, 8], "texture": "#tex"},
+				"down": {"uv": [8, 0, 16, 8], "texture": "#tex"}
+			}
+		},
+		{
+			"name": "stand_pin",
+			"from": [7, 0, 7],
+			"to": [9, 6, 9],
+			"faces": {
+				"north": {"uv": [2, 12, 4, 16], "texture": "#tex"},
+				"east": {"uv": [4, 12, 6, 16], "texture": "#tex"},
+				"south": {"uv": [6, 12, 8, 16], "texture": "#tex"},
+				"west": {"uv": [0, 12, 2, 16], "texture": "#tex"}
+			}
+		}
+	]
+}

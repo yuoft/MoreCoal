@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "yoy",
+    "zzz"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:torch"
+    },
+    "y": {
+      "item": "minecraft:string"
+    },
+    "z": {
+      "tag": "minecraft:logs"
+    },
+    "o": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "morecoal:big_torch"
+  }
+}
