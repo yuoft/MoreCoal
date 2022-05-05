@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "x x",
+    "xyx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:grass_block"
+    },
+    "y": {
+      "item": "minecraft:iron_chestplate"
+    }
+  },
+  "result": {
+    "item": "morecoal:grass_chest"
+  }
+}

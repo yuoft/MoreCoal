@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "morecoal:block/torch_placer_side",
+    "north": "morecoal:block/torch_placer_side",
+    "east": "morecoal:block/torch_placer_side",
+    "south": "morecoal:block/torch_placer_side",
+    "west": "morecoal:block/torch_placer_side",
+    "up": "morecoal:block/torch_placer_up",
+    "down": "morecoal:block/torch_placer_down"
+  }
+}

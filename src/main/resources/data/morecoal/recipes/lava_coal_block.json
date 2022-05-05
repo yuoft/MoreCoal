@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xxx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:lava_coal"
+    }
+  },
+  "result": {
+    "item": "morecoal:lava_coal_block"
+  }
+}

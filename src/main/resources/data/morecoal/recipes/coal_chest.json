@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "x x",
+    "xyx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:coal_ingot"
+    },
+    "y": {
+      "item": "minecraft:leather_chestplate"
+    }
+  },
+  "result": {
+    "item": "morecoal:coal_chest"
+  }
+}

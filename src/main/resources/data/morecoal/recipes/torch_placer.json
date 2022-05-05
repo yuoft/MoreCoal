@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "mxm",
+    "zyz",
+    "zzz"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:daylight_detector"
+    },
+    "y": {
+      "item": "morecoal:lava_coal"
+    },
+    "z": {
+      "item": "minecraft:furnace"
+    },
+    "m": {
+      "item": "minecraft:torch"
+    }
+  },
+  "result": {
+    "item": "morecoal:torch_placer"
+  }
+}

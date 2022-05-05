@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"item": "morecoal:diamond_coal_block"
+	}
+  ],
+  "result": {
+    "item": "morecoal:diamond_coal",
+    "count": 9
+  }
+}

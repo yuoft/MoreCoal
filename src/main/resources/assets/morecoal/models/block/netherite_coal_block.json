@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "morecoal:block/netherite_coal_block"
+  }
+}

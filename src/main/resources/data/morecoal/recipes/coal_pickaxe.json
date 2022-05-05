@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    " y ",
+    " z "
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:coal_ingot"
+    },
+    "y": {
+      "item": "minecraft:torch"
+    },
+    "z": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "morecoal:coal_pickaxe"
+  }
+}

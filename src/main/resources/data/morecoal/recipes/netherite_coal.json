@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " x ",
+    "xyx",
+    " x "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "y": {
+      "item": "morecoal:diamond_coal"
+    }
+  },
+  "result": {
+    "item": "morecoal:netherite_coal"
+  }
+}

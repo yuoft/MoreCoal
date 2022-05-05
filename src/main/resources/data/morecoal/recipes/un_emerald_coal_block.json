@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"item": "morecoal:emerald_coal_block"
+	}
+  ],
+  "result": {
+    "item": "morecoal:emerald_coal",
+    "count": 9
+  }
+}
