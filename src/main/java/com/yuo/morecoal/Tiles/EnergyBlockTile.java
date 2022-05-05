@@ -22,23 +22,26 @@ public class EnergyBlockTile extends TileEntity implements ITickableTileEntity {
 
     @Override
     public void tick() {
-        if (world == null && world.isRemote) return;
-        if (world.getGameTime() % 20 == 0 ) { //每秒触发一次
-            BlockState state = world.getBlockState(pos.up()); //获取上方方块
-            TileEntity tileEntity = world.getTileEntity(pos.up());
-            if (tileEntity instanceof AbstractFurnaceTileEntity){
-                AbstractFurnaceTileEntity furnaceTile = (AbstractFurnaceTileEntity) tileEntity;
-                if (!isRun(furnaceTile)) return;
+        if (world == null || world.isRemote) return;
+        BlockState state = world.getBlockState(pos.up()); //获取上方方块
+        TileEntity tileEntity = world.getTileEntity(pos.up());
+        if (tileEntity instanceof AbstractFurnaceTileEntity){
+            AbstractFurnaceTileEntity furnaceTile = (AbstractFurnaceTileEntity) tileEntity;
+            if (!isRun(furnaceTile)) return;
+            if (world.getGameTime() % 20 == 0 ) { //每秒触发一次
                 IIntArray data = getFurnaceData(furnaceTile);
-                int burnTime = data.get(0);
-                if (burnTime <= 0)
-                    world.setBlockState(pos.up(), state.with(AbstractFurnaceBlock.LIT, true));
-                data.set(0, 200); //0为燃烧时间
-//                data.set(1, 40); //2为烹饪总时间
-                data.set(3, data.get(3) - 100); //配方时间
+                if (data != null){
+                    int burnTime = data.get(0);
+                    if (burnTime <= 0)
+                        world.setBlockState(pos.up(), state.with(AbstractFurnaceBlock.LIT, true));
+                    data.set(0, 200); //0为燃烧时间 提供热值
+                }
+            }
+            for (int i = 0; i < 3; i++){ //加速
+                furnaceTile.tick();
             }
         }
-//        PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10, false);
+
     }
 
     //获取熔炉数据

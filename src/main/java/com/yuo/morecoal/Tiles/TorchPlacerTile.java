@@ -50,6 +50,7 @@ public class TorchPlacerTile extends TileEntity implements ITickableTileEntity, 
 
     @Override
     public void tick() {
+        if (world == null || world.isRemote) return;
         boolean flag = this.isBurning();
         //机器运行逻辑
         if (this.isBurning()) {
@@ -58,7 +59,6 @@ public class TorchPlacerTile extends TileEntity implements ITickableTileEntity, 
             torchPlacerData.set(2, energy);
         }
 
-        if (world.isRemote) return;
         ItemStack fuel = this.items.get(0);
         if ((this.isBurning() || !fuel.isEmpty()) && energy < 10400) { //正在运行或燃料不为空 能量未达上限
             if (!this.isBurning()) {

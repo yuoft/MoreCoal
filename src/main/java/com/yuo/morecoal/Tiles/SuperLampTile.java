@@ -33,7 +33,8 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
 
     @Override
     public void tick() {
-        if (world == null && world.isRemote) return;
+        if (world == null || world.isRemote) return;
+        if (world.isNightTime()) return;
         if (world.getGameTime() % 10 != 0) return; //每0.5秒运行一次
         if (childLights.size() > 64) return;  //限制光源数量
 
