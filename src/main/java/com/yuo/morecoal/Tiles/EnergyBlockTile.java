@@ -60,30 +60,27 @@ public class EnergyBlockTile extends TileEntity implements ITickableTileEntity {
         ItemStack stack = furnaceTile.getStackInSlot(0);
         if (!stack1.isEmpty()) return false; //燃料为空
         if (stack.isEmpty()) return false; //待烧物品不为空
-        if (getRecipeOutput(furnaceTile, stack).equals(stack)) return false; //无烧炼产物
-        return true;
+        return !getRecipeOutput(furnaceTile, stack).equals(stack); //无烧炼产物
     }
 
     //根据不同熔炉类型返回产物
     private ItemStack getRecipeOutput(AbstractFurnaceTileEntity furnaceTile, ItemStack stack) {
+        if (world == null) return ItemStack.EMPTY;
         if (furnaceTile instanceof BlastFurnaceTileEntity) {  //高炉
-            ItemStack output = world.getRecipeManager().getRecipe(IRecipeType.BLASTING, new Inventory(stack), world)
+            return world.getRecipeManager().getRecipe(IRecipeType.BLASTING, new Inventory(stack), world)
                     .map(BlastingRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
                     .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
                     .orElse(stack);
-            return output;
         } else if (furnaceTile instanceof SmokerTileEntity) { //烟熏炉
-            ItemStack output = world.getRecipeManager().getRecipe(IRecipeType.SMOKING, new Inventory(stack), world)
+            return world.getRecipeManager().getRecipe(IRecipeType.SMOKING, new Inventory(stack), world)
                     .map(SmokingRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
                     .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
                     .orElse(stack);
-            return output;
         } else {
-            ItemStack output = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), world)
+            return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), world)
                     .map(FurnaceRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
                     .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
                     .orElse(stack);
-            return output;
         }
     }
 

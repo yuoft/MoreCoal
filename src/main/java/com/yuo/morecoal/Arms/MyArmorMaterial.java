@@ -2,14 +2,11 @@ package com.yuo.morecoal.Arms;
 
 import java.util.function.Supplier;
 
-import com.yuo.morecoal.Items.ItemRegistry;
+import com.yuo.morecoal.Items.MoreCoalItems;
 import com.yuo.morecoal.MoreCoal;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.SoundEvent;
@@ -22,16 +19,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public enum MyArmorMaterial implements IArmorMaterial {
 	//---------材质---耐久值----------护甲值-------附魔能力--------音效----------------------盔甲韧性- 击退抗性-修复材料
-	COAL_INGOT(MoreCoal.MODID + ":" + "coal", 14, new int[] { 2, 3, 4, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
-		return Ingredient.fromItems(ItemRegistry.coalIngot.get());
+	COAL_INGOT(MoreCoal.MODID + ":" + "coal", 16, new int[] { 2, 5, 6, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
+		return Ingredient.fromItems(MoreCoalItems.coalIngot.get());
 	}),
-	BEACON(MoreCoal.MODID + ":" + "beacon", 20, new int[] { 3, 5, 7, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
+	BEACON(MoreCoal.MODID + ":" + "beacon", 21, new int[] { 4, 7, 9, 5 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
 		return Ingredient.fromItems(Blocks.BEACON);
 	}),
 	GRASS(MoreCoal.MODID + ":" + "grass", 13, new int[] { 2, 3, 4, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
 		return Ingredient.fromItems(Blocks.GRASS);
 	}),
-	OBSIDIAN(MoreCoal.MODID + ":" + "obsidian", 25, new int[] { 3, 6, 8, 3 }, 8, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 1.0F, 0.05f,() -> {
+	OBSIDIAN(MoreCoal.MODID + ":" + "obsidian", 35, new int[] { 3, 6, 8, 4 }, 8, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 1.0F, 0.05f,() -> {
 		return Ingredient.fromItems(Blocks.OBSIDIAN);
 	});
 

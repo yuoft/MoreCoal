@@ -1,5 +1,4 @@
 {
-	#物品
 	"item.morecoal.iron_coal": "铁煤炭",
 	"item.morecoal.gold_coal": "黄金煤炭",
 	"item.morecoal.diamond_coal": "钻石煤炭",
@@ -11,12 +10,12 @@
 	"item.morecoal.coal_ingot": "煤炭锭",
 	"item.morecoal.torch_arrow": "火把箭",
 	"item.morecoal.air_light": "火把箭",
-	#武器和工具
+
 	"item.morecoal.coal_bow": "煤炭弓",
 	"item.morecoal.coal_pickaxe": "煤炭镐",
 	"item.morecoal.coal_axe": "煤炭斧",
 	"item.morecoal.coal_sword": "煤炭剑",
-	#装备
+
 	"item.morecoal.coal_head": "煤炭头盔",
 	"item.morecoal.coal_chest": "煤炭胸甲",
 	"item.morecoal.coal_legs": "煤炭护腿",
@@ -33,7 +32,7 @@
 	"item.morecoal.obsidian_chest": "黑曜石胸甲",
 	"item.morecoal.obsidian_legs": "黑曜石护腿",
 	"item.morecoal.obsidian_feet": "黑曜石鞋子",
-	#方块
+
 	"block.morecoal.iron_coal_block": "铁煤炭块",
 	"block.morecoal.gold_coal_block": "黄金煤炭块",
 	"block.morecoal.diamond_coal_block": "钻石煤炭块",
@@ -52,7 +51,7 @@
 	"block.morecoal.torch_placer": "火把放置器",
 	"block.morecoal.big_torch": "巨型火把",
 	"block.morecoal.big_torch0": "巨型火把-反型",
-	#物品信息
+
 	"morecoal.text.itemInfo.coal_feet": "暗处放置火把",
 	"morecoal.text.itemInfo.coal_sword": "攻击点燃生物，击杀动物掉落熟肉",
 	"morecoal.text.itemInfo.coal_axe": "攻击点燃生物，击杀动物掉落熟肉，砍树掉落木炭",
@@ -69,9 +68,9 @@
 	"morecoal.text.blockInfo.energy_block": "持续为上方熔炉提供能量",
 	"morecoal.text.blockInfo.fall_block": "砸中某些物品时，或许会令其发生变化",
 	"morecoal.text.blockInfo.super_lamp": "点亮周围大约4个区块",
-	#GUI,
+
 	"gui.morecoal.torch_placer": "区域火把放置器",
 	"gui.morecoal.inventory": "物品栏",
-	#物品栏
+
 	"itemGroup.MoreCoal": "更多煤炭"
 }

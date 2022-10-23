@@ -40,7 +40,7 @@ public class AirLight extends Block {
     //一段时间后消失
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (worldIn.isRemote) return;
-        Integer i = state.get(AGE);
+        int i = state.get(AGE);
         if (rand.nextInt(5) == 0 && i < 25){
             BlockState state1 = state.with(AGE, i + 1);
             worldIn.setBlockState(pos, state1, 2);

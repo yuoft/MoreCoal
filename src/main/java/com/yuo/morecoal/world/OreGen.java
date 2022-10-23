@@ -1,6 +1,6 @@
 package com.yuo.morecoal.world;
 
-import com.yuo.morecoal.Blocks.BlockRegistry;
+import com.yuo.morecoal.Blocks.MoreCoalBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biome;
@@ -17,23 +17,23 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
  * 矿物生成
  */
 public class OreGen {
-    private static int topOffset = 0;
+    private static final int topOffset = 0;
 
     public static void generateOres(final BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
         //主世界
         if (!(event.getCategory().equals(Biome.Category.THEEND) || event.getCategory().equals(Biome.Category.NETHER))){
-            addFeatureOverWorld(generation, BlockRegistry.moreCoalOre.get().getDefaultState(),
+            addFeatureOverWorld(generation, MoreCoalBlocks.moreCoalOre.get().getDefaultState(),
                     5, 32, 128, 8);
         }
         //下届
         if (event.getCategory().equals(Biome.Category.NETHER)){
-            addFeatureNether(generation, BlockRegistry.netherMoreCoalOre.get().getDefaultState(),
+            addFeatureNether(generation, MoreCoalBlocks.netherMoreCoalOre.get().getDefaultState(),
                     5, 64, 128, 10);
         }
         //末地
         if (event.getCategory().equals(Biome.Category.THEEND)){
-            addFeatureTheend(generation, BlockRegistry.endMoreCoalOre.get().getDefaultState(),
+            addFeatureTheend(generation, MoreCoalBlocks.endMoreCoalOre.get().getDefaultState(),
                     5, 32, 64, 8);
         }
     }

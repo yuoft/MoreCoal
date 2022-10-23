@@ -1,6 +1,6 @@
 package com.yuo.morecoal.tab;
 
-import com.yuo.morecoal.Items.ItemRegistry;
+import com.yuo.morecoal.Items.MoreCoalItems;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +14,6 @@ public class ModGroup extends ItemGroup{
 	//图标
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(ItemRegistry.diamondCoal.get());
+		return new ItemStack(MoreCoalItems.diamondCoal.get());
 	}
 }

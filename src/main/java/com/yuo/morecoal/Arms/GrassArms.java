@@ -1,6 +1,5 @@
 package com.yuo.morecoal.Arms;
 
-import com.yuo.morecoal.Items.ItemRegistry;
 import com.yuo.morecoal.tab.ModGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;

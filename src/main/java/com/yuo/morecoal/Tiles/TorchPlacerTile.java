@@ -1,6 +1,5 @@
 package com.yuo.morecoal.Tiles;
 
-import com.mojang.authlib.GameProfile;
 import com.yuo.morecoal.Blocks.TorchPlacer;
 import com.yuo.morecoal.Gui.TorchPlacerContainer;
 import com.yuo.morecoal.Gui.TorchPlacerIntArray;
@@ -12,28 +11,23 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.INameable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class TorchPlacerTile extends TileEntity implements ITickableTileEntity, INamedContainerProvider, IInventory, INameable, ISidedInventory {
     private int burnTime; //燃烧时间
@@ -84,7 +78,7 @@ public class TorchPlacerTile extends TileEntity implements ITickableTileEntity, 
         }
         if (flag != this.isBurning()) { //状态变化
             markDirty();
-            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(AbstractFurnaceBlock.LIT, Boolean.valueOf(this.isBurning())), 3);
+            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(AbstractFurnaceBlock.LIT, this.isBurning()), 3);
         }
 
         //火把放置逻辑

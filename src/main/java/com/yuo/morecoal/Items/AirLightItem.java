@@ -1,6 +1,6 @@
 package com.yuo.morecoal.Items;
 
-import com.yuo.morecoal.Blocks.BlockRegistry;
+import com.yuo.morecoal.Blocks.MoreCoalBlocks;
 import com.yuo.morecoal.tab.ModGroup;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,7 +36,7 @@ public class AirLightItem extends Item {
             BlockState state = world.getBlockState(pos);
             BlockState blockState = world.getBlockState(pos.up());
             if (!state.getMaterial().isLiquid() && blockState.getMaterial().isReplaceable() && state.getMaterial().isSolid()){
-                if (world.setBlockState(pos.up(), BlockRegistry.airLight.get().getDefaultState(), 2))
+                if (world.setBlockState(pos.up(), MoreCoalBlocks.airLight.get().getDefaultState(), 2))
                     return ActionResultType.SUCCESS;
             }
         }

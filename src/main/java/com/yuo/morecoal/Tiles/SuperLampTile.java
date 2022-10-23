@@ -1,8 +1,7 @@
 package com.yuo.morecoal.Tiles;
 
-import com.mojang.authlib.GameProfile;
 import com.yuo.morecoal.Blocks.AirLight;
-import com.yuo.morecoal.Blocks.BlockRegistry;
+import com.yuo.morecoal.Blocks.MoreCoalBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,20 +11,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.*;
 import net.minecraft.world.LightType;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 //在周围？个区块范围放置火把或光源
 public class SuperLampTile extends TileEntity implements ITickableTileEntity {
 
-    private static List<BlockPos> childLights = new ArrayList<>(); //光源坐标列表
-    private int radius = 32; //光源设置范围
+    private static final List<BlockPos> childLights = new ArrayList<>(); //光源坐标列表
+    private final int radius = 32; //光源设置范围
 
     public SuperLampTile() {
         super(TileTypeRegistry.SUPER_LAMP_TILE.get());
@@ -58,7 +53,7 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
         if(!world.chunkExists(targetPos.getX(), targetPos.getZ())) return; //区块是否加载
 
         if (world.isAirBlock(targetPos) && world.getLightFor(LightType.BLOCK, targetPos) < 5){ //亮度小于5
-            if(world.setBlockState(targetPos, BlockRegistry.airLight.get().getDefaultState().with(AirLight.AGE, 0), 2)) {
+            if(world.setBlockState(targetPos, MoreCoalBlocks.airLight.get().getDefaultState().with(AirLight.AGE, 0), 2)) {
                 childLights.add(targetPos);
                 markDirty();  //告知游戏保存数据
             }
@@ -89,10 +84,10 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
 
     //清除光源
     public void removeChildLights() {
-        if(world.isRemote) return;
+        if(world == null || world.isRemote) return;
         for(BlockPos pos : childLights) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
-            if (world.getBlockState(pos).getBlock().equals(BlockRegistry.airLight.get()))
+            if (world.getBlockState(pos).getBlock().equals(MoreCoalBlocks.airLight.get()))
                 world.removeBlock(pos, false);
         }
         childLights.clear();

@@ -18,14 +18,13 @@ public class TorchArrow extends ArrowItem {
     //创建箭实体
     @Override
     public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-        TorchArrowEntity arrowentity = new TorchArrowEntity(EntityTypeRegistry.TORCH_ARROW.get(), shooter, worldIn);
-        return arrowentity;
+        return new TorchArrowEntity(EntityTypeRegistry.TORCH_ARROW.get(), shooter, worldIn);
     }
 
     //是否无限
     @Override
     public boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.entity.player.PlayerEntity player) {
         int enchant = net.minecraft.enchantment.EnchantmentHelper.getEnchantmentLevel(net.minecraft.enchantment.Enchantments.INFINITY, bow);
-        return enchant <= 0 ? false : this.getClass() == TorchArrow.class;
+        return enchant > 0 && this.getClass() == TorchArrow.class;
     }
 }

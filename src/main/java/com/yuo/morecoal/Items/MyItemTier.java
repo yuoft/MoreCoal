@@ -7,8 +7,8 @@ import net.minecraft.util.LazyValue;
 import java.util.function.Supplier;
 
 public enum MyItemTier implements IItemTier {
-    COAL_INGOT(356, 5.0f, 2.0f, 2, 7, () -> {
-             return Ingredient.fromItems(ItemRegistry.coalIngot.get());
+    COAL_INGOT(356, 5.0f, 3.5f, 2, 7, () -> {
+             return Ingredient.fromItems(MoreCoalItems.coalIngot.get());
     });
 
     private final int maxUses;//耐久

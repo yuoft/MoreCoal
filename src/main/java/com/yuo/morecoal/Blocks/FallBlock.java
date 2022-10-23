@@ -1,19 +1,19 @@
 package com.yuo.morecoal.Blocks;
 
 import com.yuo.morecoal.Event.EventHandler;
-import com.yuo.morecoal.Items.ItemRegistry;
+import com.yuo.morecoal.Items.MoreCoalItems;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -44,12 +44,12 @@ public class FallBlock extends FallingBlock {
             boolean willDead = false;
             for (int i = 0; i < itemEntity.getItem().getCount(); i++) {
                 Item item = itemEntity.getItem().getItem();
-                if (item.equals(Items.COAL_BLOCK)) {
-                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemRegistry.coalIngot.get())));
+                if (item == Items.COAL_BLOCK) {
+                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(MoreCoalItems.coalIngot.get())));
                     willDead = true;
                 }
-                if (item.equals(ItemRegistry.moreCoalOre.get()) || item.equals(ItemRegistry.netherMoreCoalOre.get())
-                        || item.equals(ItemRegistry.endMoreCoalOre.get())){
+                if (item == MoreCoalItems.moreCoalOre.get() || item == MoreCoalItems.netherMoreCoalOre.get()
+                        || item == MoreCoalItems.endMoreCoalOre.get()){
                     EventHandler.dropsSuperCoal(worldIn, pos, false);
                     willDead = true;
                 }
@@ -57,5 +57,10 @@ public class FallBlock extends FallingBlock {
             if (willDead)
                 itemEntity.remove();
         }
+
+        for (LivingEntity living : worldIn.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos))) {
+            living.attackEntityFrom(DamageSource.ANVIL, 2);
+        }
+
     }
 }

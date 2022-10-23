@@ -2,7 +2,7 @@ package com.yuo.morecoal.Items.Bow;
 
 import com.yuo.morecoal.Entity.EntityTypeRegistry;
 import com.yuo.morecoal.Entity.TorchArrowEntity;
-import com.yuo.morecoal.Items.TagsRegistry;
+import com.yuo.morecoal.Items.MoreCoalTags;
 import com.yuo.morecoal.tab.ModGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 public class CoalBow extends BowItem {
 
     public static final Predicate<ItemStack> TORCH_ARROWS = (stack) -> {
-        ITag<Item> tag = ItemTags.getCollection().get(TagsRegistry.TORCH_ARROWS);
+        ITag<Item> tag = ItemTags.getCollection().get(MoreCoalTags.TORCH_ARROWS);
         return stack.getItem().isIn(tag);
     };
 
@@ -36,6 +36,7 @@ public class CoalBow extends BowItem {
         super(new Properties().maxDamage(384).group(ModGroup.myGroup));
     }
 
+    @Override
     public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
         if (arrow.getEntity() instanceof LivingEntity){
             return new TorchArrowEntity(EntityTypeRegistry.TORCH_ARROW.get(), (LivingEntity) arrow.getEntity(), arrow.world);

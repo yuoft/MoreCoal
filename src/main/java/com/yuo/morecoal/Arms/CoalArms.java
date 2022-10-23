@@ -1,6 +1,6 @@
 package com.yuo.morecoal.Arms;
 
-import com.yuo.morecoal.Items.ItemRegistry;
+import com.yuo.morecoal.Items.MoreCoalItems;
 import com.yuo.morecoal.tab.ModGroup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -21,7 +21,7 @@ public class CoalArms extends ArmorItem{
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		if (stack.getItem().equals(ItemRegistry.coalFeet.get())){
+		if (stack.getItem().equals(MoreCoalItems.coalFeet.get())){
 			tooltip.add(new TranslationTextComponent("morecoal.text.itemInfo.coal_feet"));
 		}
 	}

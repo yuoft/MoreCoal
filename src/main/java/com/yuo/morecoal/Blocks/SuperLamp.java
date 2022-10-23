@@ -52,8 +52,7 @@ public class SuperLamp extends Block {
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         BlockPos down = pos.down();
-        if (worldIn.isAirBlock(down)) return false;
-        return true;
+        return !worldIn.isAirBlock(down);
     }
 
     @OnlyIn(Dist.CLIENT)

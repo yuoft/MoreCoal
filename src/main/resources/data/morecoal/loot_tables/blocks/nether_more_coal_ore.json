@@ -3,15 +3,58 @@
   "pools": [
     {
       "rolls": 1,
+      "functions": [
+        {
+          "function": "minecraft:apply_bonus",
+          "enchantment": "fortune",
+          "formula": "ore_drops"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "morecoal:nether_more_coal_ore"
-        }
-      ],
-      "conditions": [
+          "name": "minecraft:coal",
+          "weight": 45
+        },
         {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:item",
+          "name": "morecoal:iron_coal",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:gold_coal",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:diamond_coal",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:netherite_coal",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:lapis_coal",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:redstone_coal",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:emerald_coal",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "morecoal:lava_coal",
+          "weight": 2
         }
       ]
     }

@@ -34,11 +34,11 @@ public class TorchPlacerScreen extends ContainerScreen<TorchPlacerContainer> {
         blit(matrixStack, i, j, 0, 0, xSize, ySize);
         //燃烧时间
         if (this.container.isRunning()) {
-            int k = this.container.getBurnTime() > 14 ? 14 : this.container.getBurnTime();
+            int k = Math.min(this.container.getBurnTime(), 14);
             this.blit(matrixStack, i + 49, j + 20 + 12 - k, 176, 14 - k, 14, k);
         }
         //能量存储
-        int l = this.container.getEnergy() > 52 ? 52 : this.container.getEnergy();
+        int l = Math.min(this.container.getEnergy(), 52);
         this.blit(matrixStack, i + 162, j + 17 + 52 - l, 176, 52 + 14 - l, 6, l);
     }
 
