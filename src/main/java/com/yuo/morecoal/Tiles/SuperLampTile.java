@@ -10,6 +10,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.*;
 import net.minecraft.world.LightType;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.common.util.Constants;
 
@@ -29,7 +30,7 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
     @Override
     public void tick() {
         if (world == null || world.isRemote) return;
-        if (world.isNightTime()) return;
+        if (!world.isNightTime()) return;
         if (world.getGameTime() % 10 != 0) return; //每0.5秒运行一次
         if (childLights.size() > 64) return;  //限制光源数量
 
@@ -50,7 +51,7 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
         if(targetPos.getY() > worldHeightCap)
             targetPos = new BlockPos(targetPos.getX(), worldHeightCap - 1, targetPos.getZ());
 
-        if(!world.chunkExists(targetPos.getX(), targetPos.getZ())) return; //区块是否加载
+        if(!world.isBlockLoaded(targetPos)) return; //区块是否加载
 
         if (world.isAirBlock(targetPos) && world.getLightFor(LightType.BLOCK, targetPos) < 5){ //亮度小于5
             if(world.setBlockState(targetPos, MoreCoalBlocks.airLight.get().getDefaultState().with(AirLight.AGE, 0), 2)) {

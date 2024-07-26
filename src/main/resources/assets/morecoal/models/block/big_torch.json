@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"1": "morecoal:block/big_torch_up",
 		"2": "morecoal:block/big_torch_down",

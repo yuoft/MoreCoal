@@ -36,7 +36,7 @@ public class SuperLamp extends Block {
 
     public SuperLamp() {
         super(Properties.create(Material.ROCK).harvestLevel(0).harvestTool(ToolType.PICKAXE)
-                .hardnessAndResistance(3,3).sound(SoundType.GLASS));
+                .hardnessAndResistance(3,3).setLightLevel((e) -> 15).sound(SoundType.GLASS));
     }
 
     @Override

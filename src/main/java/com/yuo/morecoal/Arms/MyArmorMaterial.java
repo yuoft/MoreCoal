@@ -19,18 +19,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public enum MyArmorMaterial implements IArmorMaterial {
 	//---------材质---耐久值----------护甲值-------附魔能力--------音效----------------------盔甲韧性- 击退抗性-修复材料
-	COAL_INGOT(MoreCoal.MODID + ":" + "coal", 16, new int[] { 2, 5, 6, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
-		return Ingredient.fromItems(MoreCoalItems.coalIngot.get());
-	}),
-	BEACON(MoreCoal.MODID + ":" + "beacon", 21, new int[] { 4, 7, 9, 5 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
-		return Ingredient.fromItems(Blocks.BEACON);
-	}),
-	GRASS(MoreCoal.MODID + ":" + "grass", 13, new int[] { 2, 3, 4, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,() -> {
-		return Ingredient.fromItems(Blocks.GRASS);
-	}),
-	OBSIDIAN(MoreCoal.MODID + ":" + "obsidian", 35, new int[] { 3, 6, 8, 4 }, 8, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 1.0F, 0.05f,() -> {
-		return Ingredient.fromItems(Blocks.OBSIDIAN);
-	});
+	COAL_INGOT(MoreCoal.MODID + ":" + "coal", 16, new int[] { 2, 5, 6, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,
+			() -> Ingredient.fromItems(MoreCoalItems.coalIngot.get())),
+	BEACON(MoreCoal.MODID + ":" + "beacon", 21, new int[] { 4, 7, 9, 5 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,
+			() -> Ingredient.fromItems(Blocks.BEACON)),
+	GRASS(MoreCoal.MODID + ":" + "grass", 13, new int[] { 2, 5, 6, 2 }, 7, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.5F, 0,
+			() -> Ingredient.fromItems(Blocks.GRASS)),
+	OBSIDIAN(MoreCoal.MODID + ":" + "obsidian", 35, new int[] { 3, 6, 8, 4 }, 8, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, 0.05f,
+			() -> Ingredient.fromItems(Blocks.OBSIDIAN));
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 	private final String name;

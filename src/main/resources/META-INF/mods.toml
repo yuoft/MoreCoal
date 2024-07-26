@@ -3,7 +3,7 @@ loaderVersion="[36,)"
 license="All rights reserved"
 [[mods]] #mandatory
 modId="morecoal"
-version="1.16.5-1.0.2"
+version="1.16.5-1.0.3"
 displayName="MoreCoal"
 authors="yuo" 
 description='''
