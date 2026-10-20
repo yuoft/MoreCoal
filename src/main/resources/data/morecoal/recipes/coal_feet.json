@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "x x",
+    "zyz",
+    "   "
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:coal_ingot"
+    },
+    "z": {
+      "item": "minecraft:torch"
+    },
+    "y": {
+      "item": "minecraft:leather_boots"
+    }
+  },
+  "result": {
+    "item": "morecoal:coal_feet"
+  }
+}

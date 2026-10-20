@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "zxz",
+    "xyx",
+    "zxz"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:coal_block"
+    },
+    "y": {
+      "tag": "minecraft:anvil"
+    },
+    "z": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "morecoal:fall_block"
+  }
+}

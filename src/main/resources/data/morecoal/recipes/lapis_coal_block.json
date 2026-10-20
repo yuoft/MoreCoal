@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xxx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:lapis_coal"
+    }
+  },
+  "result": {
+    "item": "morecoal:lapis_coal_block"
+  }
+}

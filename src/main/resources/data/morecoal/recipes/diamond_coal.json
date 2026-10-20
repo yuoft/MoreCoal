@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " x ",
+    "xyx",
+    " x "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:diamond"
+    },
+    "y": {
+      "item": "morecoal:gold_coal"
+    }
+  },
+  "result": {
+    "item": "morecoal:diamond_coal"
+  }
+}

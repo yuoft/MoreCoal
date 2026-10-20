@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+		"item": "morecoal:lapis_coal_block"
+	}
+  ],
+  "result": {
+    "item": "morecoal:lapis_coal",
+    "count": 9
+  }
+}

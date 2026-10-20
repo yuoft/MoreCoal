@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xxx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:emerald_coal"
+    }
+  },
+  "result": {
+    "item": "morecoal:emerald_coal_block"
+  }
+}

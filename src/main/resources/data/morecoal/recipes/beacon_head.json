@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "x x",
+    "   "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:beacon"
+    }
+  },
+  "result": {
+    "item": "morecoal:beacon_head"
+  }
+}

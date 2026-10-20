@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:diamond_boots"
+  },
+  "addition": {
+    "item": "minecraft:obsidian",
+    "count": 4
+  },
+  "result": {
+    "item": "morecoal:obsidian_feet"
+  }
+}

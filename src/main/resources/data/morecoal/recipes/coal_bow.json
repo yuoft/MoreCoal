@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " xz",
+    "myz",
+    " xz"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:coal_ingot"
+    },
+    "y": {
+      "item": "minecraft:bow"
+    },
+    "z": {
+      "item": "minecraft:string"
+    },
+    "m": {
+      "item": "minecraft:torch"
+    }
+  },
+  "result": {
+    "item": "morecoal:coal_bow"
+  }
+}

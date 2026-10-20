@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:diamond_leggings"
+  },
+  "addition": {
+    "item": "minecraft:obsidian",
+    "count": 7
+  },
+  "result": {
+    "item": "morecoal:obsidian_legs"
+  }
+}

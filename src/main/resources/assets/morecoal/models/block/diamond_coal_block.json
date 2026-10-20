@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "morecoal:block/diamond_coal_block"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "mym",
+    "zxz",
+    "mym"
+  ],
+  "key": {
+    "x": {
+      "item": "morecoal:lava_coal"
+    },
+    "y": {
+      "item": "minecraft:gold_ingot"
+    },
+    "z": {
+      "tag": "forge:glass"
+    },
+    "m": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "result": {
+    "item": "morecoal:super_lamp"
+  }
+}

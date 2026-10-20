@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "morecoal:block/energy_block_side",
+    "up": "morecoal:block/energy_block_up",
+    "down": "morecoal:block/energy_block_down",
+    "north": "morecoal:block/energy_block_side",
+    "south": "morecoal:block/energy_block_side",
+    "east": "morecoal:block/energy_block_side",
+    "west": "morecoal:block/energy_block_side"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "mym",
+    "zzz"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:nether_star"
+    },
+    "y": {
+      "item": "minecraft:redstone_block"
+    },
+    "z": {
+      "item": "morecoal:lava_coal_block"
+    },
+    "m": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "morecoal:energy_block"
+  }
+}

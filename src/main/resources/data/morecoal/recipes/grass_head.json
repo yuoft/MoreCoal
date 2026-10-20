@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xyx",
+    "   "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:grass_block"
+    },
+    "y": {
+      "item": "minecraft:iron_helmet"
+    }
+  },
+  "result": {
+    "item": "morecoal:grass_head"
+  }
+}
