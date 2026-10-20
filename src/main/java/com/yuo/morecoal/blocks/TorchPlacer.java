@@ -35,7 +35,7 @@ public class TorchPlacer extends Block implements EntityBlock {
     public static final BooleanProperty WORK = BlockStateProperties.POWERED;
 
     public TorchPlacer() {
-        super(Properties.of().sound(SoundType.STONE).strength(3.0F, 3.0F).requiresCorrectToolForDrops());
+        super(Properties.of().sound(SoundType.STONE).lightLevel(e -> 15).strength(3.0F, 3.0F).requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false).setValue(WORK, false));
     }
 
@@ -53,7 +53,7 @@ public class TorchPlacer extends Block implements EntityBlock {
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         boolean powered = level.hasNeighborSignal(pos);
         if (block != this && powered != state.getValue(WORK)) {
-            level.setBlock(pos, state.setValue(WORK, powered), 2);
+            level.setBlockAndUpdate(pos, state.setValue(WORK, powered));
         }
     }
 

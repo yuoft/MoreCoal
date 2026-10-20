@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModTabs {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MoreCoal.MOD_ID);
 	public static final RegistryObject<CreativeModeTab> MOD_TAB = TABS.register(MoreCoal.MOD_ID + "_tab", () -> CreativeModeTab.builder()
-			.title(Component.translatable("itemGroup.tab.medicine"))
+			.title(Component.translatable("itemGroup.tab.morecoal"))
 			.icon(() -> ModItems.diamondCoal.get().getDefaultInstance())
 			.displayItems((parameters, output) -> {
 				for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {

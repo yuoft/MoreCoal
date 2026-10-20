@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.TallFlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,8 +29,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, MenuProvider {
 
-    private int burnTime;
-    private int burnCount;
+    private int burnTime; //燃烧时间
+    private int burnCount; //可放置数量
     private int energy;
     private NonNullList<ItemStack> items = NonNullList.withSize(10, ItemStack.EMPTY);
     private final TorchPlacerIntArray data = new TorchPlacerIntArray();
@@ -45,7 +46,7 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
         if (level.isClientSide) return;
 
         boolean wasBurning = tile.isBurning();
-
+        //机器运行逻辑
         if (tile.isBurning()) {
             --tile.burnTime;
             tile.data.set(0, tile.burnTime);
@@ -81,7 +82,8 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
             level.setBlock(pos, state.setValue(AbstractFurnaceBlock.LIT, tile.isBurning()), 3);
         }
 
-        if (pos.getY() <= 3 || pos.getY() >= level.getMaxBuildHeight() - 1) return;
+        //火把放置逻辑
+        if (pos.getY() <= -61 || pos.getY() >= level.getMaxBuildHeight() - 1) return;
         if (level.getGameTime() % 10 != 0) return;
 
         if (!state.getValue(TorchPlacer.WORK) || tile.energy < 200 || !tile.hasTorch()) return;
@@ -95,15 +97,13 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
                     pos.offset(-8 * ring, 0, -8 * ring),
                     pos.offset(8 * ring, 0, 8 * ring))) {
 
-                if (Math.abs(candidate.getX() - pos.getX()) % 8 != 0
-                        || Math.abs(candidate.getZ() - pos.getZ()) % 8 != 0
-                        || candidate.equals(pos)) {
+                if (Math.abs(candidate.getX() - pos.getX()) % 8 != 0 || Math.abs(candidate.getZ() - pos.getZ()) % 8 != 0 || candidate.equals(pos)) {
                     continue;
                 }
 
                 int surfaceY = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, candidate).getY();
                 int maxY = pos.getY() + 8;
-                int minY = Math.max(0, pos.getY() - 8);
+                int minY = Math.max(-61, pos.getY() - 8);
 
                 if (!tile.hasTorch() || tile.energy < 200 || surfaceY <= minY) {
                     return;
@@ -121,8 +121,9 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
                     boolean placeReplaceable = placeState.canBeReplaced();
                     boolean belowSolid = belowState.isSolid();
                     boolean notTallFlower = !(placeState.getBlock() instanceof TallFlowerBlock);
-                    boolean notPressurePlate = !(belowState.getBlock() instanceof net.minecraft.world.level.block.PressurePlateBlock);
+                    boolean notPressurePlate = !(belowState.getBlock() instanceof PressurePlateBlock);
 
+                    //下方不是流体,是实体方块,不是压力板 放置位置能够替换,不是高花
                     if (belowNotLiquid && placeReplaceable && belowSolid && notTallFlower && notPressurePlate) {
                         Block torchBlock = Block.byItem(tile.items.get(slot).getItem());
                         if (level.setBlock(placePos, torchBlock.defaultBlockState(), 2)) {
@@ -145,6 +146,9 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
         return items.stream().skip(1).anyMatch(TorchPlacerTile::isTorch);
     }
 
+    /**
+     * 获取火把槽位
+     */
     private int getTorchSlot() {
         for (int i = 1; i < items.size(); i++) {
             if (isTorch(items.get(i))) return i;
@@ -152,6 +156,9 @@ public class TorchPlacerTile extends BlockEntity implements WorldlyContainer, Me
         return -1;
     }
 
+    /**
+     * 物品是火把？
+     */
     public static boolean isTorch(ItemStack stack) {
         return !stack.isEmpty() && (stack.is(Items.TORCH)
                 || stack.is(Items.SOUL_TORCH)

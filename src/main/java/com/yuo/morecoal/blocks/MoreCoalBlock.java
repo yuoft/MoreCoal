@@ -11,6 +11,6 @@ public class MoreCoalBlock extends Block {
      * @param soundType 音效
      */
     public MoreCoalBlock(float destroyTime, float explosionResistance, SoundType soundType) {
-        super(Properties.of().strength(destroyTime, explosionResistance).sound(soundType));
+        super(Properties.of().strength(destroyTime, explosionResistance).sound(soundType).requiresCorrectToolForDrops());
     }
 }

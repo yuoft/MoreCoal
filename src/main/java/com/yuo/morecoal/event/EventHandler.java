@@ -25,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
@@ -83,18 +84,18 @@ public class EventHandler {
         //feet
         if (coalFeet.contains(key)) {
             if (hasFoot) {
-                BlockPos pos = player.getOnPos();
+                BlockPos pos = player.blockPosition();
                 Level level = player.level();
                 if (level.isClientSide) return;
                 if (level.getBlockState(pos.below(1)).isAir()) return;
-                int light = level.getLightEmission(pos); //获取方块处亮度
-                if (light < 5){
+                int light = level.getBrightness(LightLayer.BLOCK, pos); //获取方块处亮度
+                if (light < 5) {
                     ItemStack torch = findTorch(player);
                     if (torch.isEmpty()) { //玩家未持有火把
                         level.setBlockAndUpdate(pos, Blocks.TORCH.defaultBlockState()); //设置火把
                         ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
                         stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(InteractionHand.MAIN_HAND)); //消耗装备耐久
-                    }else {
+                    } else {
                         level.setBlockAndUpdate(pos, Blocks.TORCH.defaultBlockState());
                         torch.setCount(torch.getCount() - 1); //消耗火把数量
                     }
@@ -114,9 +115,7 @@ public class EventHandler {
         if (!(source instanceof Player player)) return;
 
         ItemStack weapon = player.getMainHandItem();
-        if (!(weapon.getItem() instanceof CoalSword)
-                && !(weapon.getItem() instanceof CoalAxe)
-                && !(weapon.getItem() instanceof CoalBow)) {
+        if (!(weapon.getItem() instanceof CoalSword) && !(weapon.getItem() instanceof CoalAxe) && !(weapon.getItem() instanceof CoalBow)) {
             return;
         }
 
@@ -222,7 +221,7 @@ public class EventHandler {
     @SubscribeEvent
     public static void stopLivingSpawn(MobSpawnEvent.FinalizeSpawn event) {
         // 自然生成和刷怪笼生物
-        if (event.getSpawnType() != MobSpawnType.NATURAL || event.getSpawnType() != MobSpawnType.SPAWNER) return;
+        if (!(event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.SPAWNER)) return;
 
         // 2. 获取生物实体，并提前判断类型，避免无意义的扫描
         var living = event.getEntity();
@@ -239,11 +238,11 @@ public class EventHandler {
             BlockState state = level.getBlockState(blockPos);
 
             if (isMonster && state.is(ModBlocks.bigTorch.get())) {
-                event.setSpawnCancelled(true); // 关键：阻止生成
+                event.setSpawnCancelled(true);
                 return;
             }
             if (isAnimal && state.is(ModBlocks.bigTorch0.get())) {
-                event.setSpawnCancelled(true); // 关键：阻止生成
+                event.setSpawnCancelled(true);
                 return;
             }
         }

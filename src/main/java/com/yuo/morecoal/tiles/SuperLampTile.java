@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SuperLampTile extends BlockEntity {
 
-    private final List<BlockPos> childLights = new ArrayList<>();
+    private final List<BlockPos> childLights = new ArrayList<>(); //已放置坐标记录
     private final int radius = 32;
 
     public SuperLampTile(BlockPos pos, BlockState state) {
@@ -36,7 +36,7 @@ public class SuperLampTile extends BlockEntity {
         int x = (tile.radius - level.random.nextInt(diameter)) + pos.getX();
         int y = (tile.radius - level.random.nextInt(diameter)) + pos.getY();
         int z = (tile.radius - level.random.nextInt(diameter)) + pos.getZ();
-        if (y < 3) y = 3;
+        if (y < -61) y = -61;
 
         BlockPos target = new BlockPos(x, y, z);
         BlockPos surface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, target);
@@ -60,6 +60,9 @@ public class SuperLampTile extends BlockEntity {
         }
     }
 
+    /**
+     * 清除所有子光源
+     */
     public void removeChildLights() {
         if (level == null || level.isClientSide) return;
         for (BlockPos pos : childLights) {
@@ -105,6 +108,11 @@ public class SuperLampTile extends BlockEntity {
         return this.saveWithoutMetadata();
     }
 
+    /**
+     * 坐标加密
+     * @param origin 方块实体坐标
+     * @param target 被加密的光源坐标
+     */
     public static int encodePosition(BlockPos origin, BlockPos target) {
         int x = target.getX() - origin.getX();
         int y = target.getY() - origin.getY();
@@ -112,6 +120,10 @@ public class SuperLampTile extends BlockEntity {
         return ((x & 0xFF) << 16) + ((y & 0xFF) << 8) + (z & 0xFF);
     }
 
+    /**
+     * 解密
+     * @param pos 密文
+     */
     public static BlockPos decodePosition(BlockPos origin, int pos) {
         int x = (byte) ((pos >> 16) & 0xFF);
         int y = (byte) ((pos >> 8) & 0xFF);

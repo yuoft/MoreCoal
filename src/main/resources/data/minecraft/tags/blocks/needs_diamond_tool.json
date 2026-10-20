@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "morecoal:diamond_coal_block",
-    "morecoal:netherite_coal_block"
+    "morecoal:netherite_coal_block",
+    "morecoal:lapis_coal_block"
   ]
 }

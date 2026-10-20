@@ -4,8 +4,8 @@ import com.yuo.morecoal.event.EventHandler;
 import com.yuo.morecoal.items.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ public class FallBlock extends FallingBlock {
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void onLand(Level level, BlockPos pos, BlockState state, BlockState blockState, FallingBlockEntity fallingBlock) {
         // 使用略微膨胀的碰撞箱，确保能捕捉到掉在方块上表面的物品
         AABB area = new AABB(pos).inflate(0.5, 0.5, 0.5);
 
@@ -49,9 +49,7 @@ public class FallBlock extends FallingBlock {
             boolean consumed = false;
 
             if (item == Items.COAL_BLOCK) {
-                // 假设转换比例是 1 煤炭块 -> 9 煤炭锭，请根据模组设定调整
-                int ingotCount = count * 9;
-                ItemStack result = new ItemStack(ModItems.coalIngot.get(), ingotCount);
+                ItemStack result = new ItemStack(ModItems.coalIngot.get(), count);
                 level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result));
                 consumed = true;
             } else if (item == ModItems.moreCoalOre.get() || item == ModItems.moreCoalDeepOre.get()
@@ -69,7 +67,7 @@ public class FallBlock extends FallingBlock {
         }
 
         for (LivingEntity living : level.getEntitiesOfClass(LivingEntity.class, area)) {
-            living.hurt(living.damageSources().anvil(entity), 2);
+            living.hurt(living.damageSources().anvil(fallingBlock), 2);
         }
     }
 }
