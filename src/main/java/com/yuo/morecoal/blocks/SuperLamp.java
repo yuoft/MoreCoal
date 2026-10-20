@@ -1,89 +1,83 @@
 package com.yuo.morecoal.blocks;
 
+import com.yuo.morecoal.tiles.ModTiles;
 import com.yuo.morecoal.tiles.SuperLampTile;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
-public class SuperLamp extends Block {
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
-    protected final IParticleData particleData = ParticleTypes.FLAME;
+public class SuperLamp extends Block implements EntityBlock {
+    protected static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 0.875, 0.8125);
 
     public SuperLamp() {
-        super(Properties.create(Material.ROCK).harvestLevel(0).harvestTool(ToolType.PICKAXE)
-                .hardnessAndResistance(3,3).setLightLevel((e) -> 15).sound(SoundType.GLASS));
+        super(Properties.of().sound(SoundType.GLASS).strength(3.0F, 3.0F).lightLevel(state -> 15));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("morecoal.text.blockInfo.super_lamp"));
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.translatable("morecoal.text.blockInfo.super_lamp"));
     }
 
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
-    //能否放置
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        BlockPos down = pos.down();
-        return !worldIn.isAirBlock(down);
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return !level.isEmptyBlock(pos.below());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        double d0 = (double)pos.getX() + 0.5D;
-        double d1 = (double)pos.getY() + 1.0D;
-        double d2 = (double)pos.getZ() + 0.5D;
-        for (int i = 0; i < 3; i++){
-            worldIn.addParticle(ParticleTypes.SMOKE, d0, d1, d2, worldIn.rand.nextDouble() * 0.1d, worldIn.rand.nextDouble() * 0.1d, worldIn.rand.nextDouble() * 0.1d);
-            worldIn.addParticle(this.particleData, d0, d1, d2, worldIn.rand.nextDouble() * 0.1d, worldIn.rand.nextDouble() * 0.1d, worldIn.rand.nextDouble() * 0.1d);
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        double x = pos.getX() + 0.5D;
+        double y = pos.getY() + 1.0D;
+        double z = pos.getZ() + 0.5D;
+        for (int i = 0; i < 3; i++) {
+            level.addParticle(ParticleTypes.SMOKE, x, y, z, random.nextDouble() * 0.1D, random.nextDouble() * 0.1D, random.nextDouble() * 0.1D);
+            level.addParticle(ParticleTypes.FLAME, x, y, z, random.nextDouble() * 0.1D, random.nextDouble() * 0.1D, random.nextDouble() * 0.1D);
         }
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new SuperLampTile();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new SuperLampTile(pos, state);
     }
 
-    //方块被破坏时触发
     @Override
-    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving)
-    {
-        TileEntity te = world.getTileEntity(pos);
-        if(te instanceof SuperLampTile){
-            SuperLampTile superLampTile = (SuperLampTile) te;
-            superLampTile.removeChildLights();
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof SuperLampTile lamp) {
+                lamp.removeChildLights();
+            }
+            super.onRemove(state, level, pos, newState, movedByPiston);
         }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return type == ModTiles.SUPER_LAMP_TILE.get() ? (lvl, pos, st, be) -> SuperLampTile.tick(lvl, pos, st, (SuperLampTile) be) : null;
     }
 }

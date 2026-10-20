@@ -1,27 +1,14 @@
 package com.yuo.morecoal.blocks;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.OreBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorldReader;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import java.util.List;
-import java.util.Random;
+public class MoreCoalOre extends DropExperienceBlock {
 
-public class MoreCoalOre extends OreBlock {
-    public MoreCoalOre(Material material, int harvestLevel, ToolType toolType, float hardness, float resistancelln, int lightLevel) {
-        super(Properties.create(material).harvestLevel(harvestLevel).harvestTool(toolType).sound(SoundType.STONE)
-                .hardnessAndResistance(hardness, resistancelln).setLightLevel(e -> lightLevel));
-    }
-
-    @Override
-    protected int getExperience(Random rand) {
-        return MathHelper.nextInt(rand, 0, 4);
+    public MoreCoalOre(float hardness, float resistance, int lightLevel, int expMin, int expMax) {
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).lightLevel(state -> lightLevel)
+                .strength(hardness, resistance).requiresCorrectToolForDrops(), UniformInt.of(expMin, expMax));
     }
 }

@@ -1,25 +1,23 @@
 package com.yuo.morecoal.items;
 
-import com.yuo.morecoal.tab.ModGroup;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class CoalPickaxe extends PickaxeItem {
     public CoalPickaxe() {
-        super(MyItemTier.COAL_INGOT, 1, -2.8f, new Item.Properties().group(ModGroup.myGroup));
+        super(ModItemTiers.COAL_INGOT, 1, -2.8f, new Item.Properties());
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("morecoal.text.itemInfo.coal_pickaxe"));
-        tooltip.add(new TranslationTextComponent("morecoal.text.itemInfo.coal_tool"));
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.translatable("morecoal.text.itemInfo.coal_pickaxe"));
+        components.add(Component.translatable("morecoal.text.itemInfo.coal_tool"));
     }
 }

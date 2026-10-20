@@ -1,39 +1,44 @@
 package com.yuo.morecoal.blocks;
 
 import com.yuo.morecoal.tiles.EnergyBlockTile;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import com.yuo.morecoal.tiles.ModTiles;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnergyBlock extends Block {
+public class EnergyBlock extends Block implements EntityBlock {
+
     public EnergyBlock() {
-        super(Properties.create(Material.ROCK).sound(SoundType.STONE).setRequiresTool().hardnessAndResistance(3,3));
+        super(Properties.of().sound(SoundType.STONE).strength(3.0F, 3.0F).requiresCorrectToolForDrops());
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("morecoal.text.blockInfo.energy_block"));
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.translatable("morecoal.text.blockInfo.energy_block"));
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new EnergyBlockTile();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new EnergyBlockTile(pos, state);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return type == ModTiles.ENERGY_BLOCK_TILE.get() ? (lvl, pos, st, be) -> EnergyBlockTile.tick(lvl, pos, st, (EnergyBlockTile) be) : null;
+    }
 }

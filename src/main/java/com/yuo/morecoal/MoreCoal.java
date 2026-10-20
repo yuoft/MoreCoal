@@ -1,13 +1,13 @@
 package com.yuo.morecoal;
 
 import com.yuo.morecoal.blocks.ModBlocks;
-import com.yuo.morecoal.etity.EntityTypeRegistry;
-import com.yuo.morecoal.gui.ContainerTypeRegistry;
+import com.yuo.morecoal.entity.ModEntityTypes;
+import com.yuo.morecoal.gui.ModMenus;
 import com.yuo.morecoal.items.ModItems;
 import com.yuo.morecoal.proxy.ClientProxy;
 import com.yuo.morecoal.proxy.CommonProxy;
 import com.yuo.morecoal.proxy.IProxy;
-import com.yuo.morecoal.tiles.TileTypeRegistry;
+import com.yuo.morecoal.tiles.ModTiles;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
@@ -26,9 +26,9 @@ public class MoreCoal {
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModTabs.TABS.register(modEventBus);
-        EntityTypeRegistry.ENTITY_TYPES.register(modEventBus);
-        ContainerTypeRegistry.CONTAINERS.register(modEventBus);
-        TileTypeRegistry.TILE_ENTITIES.register(modEventBus);
+        ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        ModMenus.MENUS.register(modEventBus);
+        ModTiles.TILE_ENTITIES.register(modEventBus);
 
         proxy.registerHandlers(modEventBus);
     }

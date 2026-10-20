@@ -1,87 +1,110 @@
 package com.yuo.morecoal.tiles;
 
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.IIntArray;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SmokerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.lang.reflect.Field;
 
-//为上方熔炉提供热值
-public class EnergyBlockTile extends TileEntity implements ITickableTileEntity {
-    private static final Field FURNACE_DATA_FIELD = ObfuscationReflectionHelper.findField(AbstractFurnaceTileEntity.class, "field_214013_b");
+public class EnergyBlockTile extends BlockEntity {
 
-    public EnergyBlockTile() {
-        super(TileTypeRegistry.ENERGY_BLOCK_TILE.get());
+    private static final Field FURNACE_DATA_FIELD;
+
+    static {
+        try {
+            FURNACE_DATA_FIELD = AbstractFurnaceBlockEntity.class.getDeclaredField("dataAccess");
+            FURNACE_DATA_FIELD.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException("Failed to locate furnace dataAccess field", e);
+        }
     }
 
-    @Override
-    public void tick() {
-        if (world == null || world.isRemote) return;
-        BlockState state = world.getBlockState(pos.up()); //获取上方方块
-        TileEntity tileEntity = world.getTileEntity(pos.up());
-        if (tileEntity instanceof AbstractFurnaceTileEntity){
-            AbstractFurnaceTileEntity furnaceTile = (AbstractFurnaceTileEntity) tileEntity;
-            if (!isRun(furnaceTile)) return;
-            if (world.getGameTime() % 20 == 0 ) { //每秒触发一次
-                IIntArray data = getFurnaceData(furnaceTile);
-                if (data != null){
-                    int burnTime = data.get(0);
-                    if (burnTime <= 0)
-                        world.setBlockState(pos.up(), state.with(AbstractFurnaceBlock.LIT, true));
-                    data.set(0, 200); //0为燃烧时间 提供热值
+    public EnergyBlockTile(BlockPos pos, BlockState state) {
+        super(ModTiles.ENERGY_BLOCK_TILE.get(), pos, state);
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, EnergyBlockTile tile) {
+        if (level.isClientSide) return;
+
+        BlockPos above = pos.above();
+        BlockEntity be = level.getBlockEntity(above);
+        if (!(be instanceof AbstractFurnaceBlockEntity furnace)) return;
+
+        if (!tile.isRun(furnace)) return;
+
+        if (level.getGameTime() % 20 == 0) {
+            ContainerData data = tile.getFurnaceData(furnace);
+            if (data != null) {
+                int burnTime = data.get(0);
+                if (burnTime <= 0) {
+                    BlockState aboveState = level.getBlockState(above);
+                    level.setBlock(above, aboveState.setValue(AbstractFurnaceBlock.LIT, true), 2);
                 }
-            }
-            for (int i = 0; i < 3; i++){ //加速
-                furnaceTile.tick();
+                data.set(0, 200);
             }
         }
 
+        // 加速：直接调用方块实体的 tick 逻辑
+        for (int i = 0; i < 3; i++) {
+            AbstractFurnaceBlockEntity.serverTick(level, above, level.getBlockState(above), furnace);
+        }
     }
 
-    //获取熔炉数据
-    private static IIntArray getFurnaceData(AbstractFurnaceTileEntity tile) {
+    private ContainerData getFurnaceData(AbstractFurnaceBlockEntity furnace) {
         try {
-            return (IIntArray) FURNACE_DATA_FIELD.get(tile);
+            return (ContainerData) FURNACE_DATA_FIELD.get(furnace);
         } catch (IllegalAccessException e) {
-            System.out.println("Couldn't reflect furnace field: " + e.getMessage());
             return null;
         }
     }
 
-    //判断是否提供热值
-    private boolean isRun(AbstractFurnaceTileEntity furnaceTile){
-        ItemStack stack1 = furnaceTile.getStackInSlot(1);
-        ItemStack stack = furnaceTile.getStackInSlot(0);
-        if (!stack1.isEmpty()) return false; //燃料为空
-        if (stack.isEmpty()) return false; //待烧物品不为空
-        return !getRecipeOutput(furnaceTile, stack).equals(stack); //无烧炼产物
+    private boolean isRun(AbstractFurnaceBlockEntity furnace) {
+        ItemStack fuel = furnace.getItem(1);
+        ItemStack input = furnace.getItem(0);
+        if (!fuel.isEmpty()) return false;
+        if (input.isEmpty()) return false;
+        return !getRecipeOutput(furnace, input).equals(input);
     }
 
-    //根据不同熔炉类型返回产物
-    private ItemStack getRecipeOutput(AbstractFurnaceTileEntity furnaceTile, ItemStack stack) {
-        if (world == null) return ItemStack.EMPTY;
-        if (furnaceTile instanceof BlastFurnaceTileEntity) {  //高炉
-            return world.getRecipeManager().getRecipe(IRecipeType.BLASTING, new Inventory(stack), world)
-                    .map(BlastingRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
-                    .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
-                    .orElse(stack);
-        } else if (furnaceTile instanceof SmokerTileEntity) { //烟熏炉
-            return world.getRecipeManager().getRecipe(IRecipeType.SMOKING, new Inventory(stack), world)
-                    .map(SmokingRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
-                    .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
-                    .orElse(stack);
+    private ItemStack getRecipeOutput(AbstractFurnaceBlockEntity furnace, ItemStack stack) {
+        if (level == null) return ItemStack.EMPTY;
+
+        RecipeType<? extends AbstractCookingRecipe> type;
+        if (furnace instanceof BlastFurnaceBlockEntity) {
+            type = RecipeType.BLASTING;
+        } else if (furnace instanceof SmokerBlockEntity) {
+            type = RecipeType.SMOKING;
         } else {
-            return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), world)
-                    .map(FurnaceRecipe::getRecipeOutput).filter(e -> !e.isEmpty())
-                    .map(e -> ItemHandlerHelper.copyStackWithSize(e, stack.getCount() * e.getCount()))
-                    .orElse(stack);
+            type = RecipeType.SMELTING;
         }
+
+        return level.getRecipeManager()
+                .getRecipeFor((RecipeType<AbstractCookingRecipe>) type, new SimpleContainer(stack), level)
+                .map(holder -> holder.getResultItem(level.registryAccess()))
+                .filter(result -> !result.isEmpty())
+                .map(result -> ItemHandlerHelper.copyStackWithSize(result, stack.getCount() * result.getCount()))
+                .orElse(stack);
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+    }
 }

@@ -1,100 +1,110 @@
 package com.yuo.morecoal.tiles;
 
-import com.yuo.morecoal.Blocks.AirLight;
-import com.yuo.morecoal.Blocks.MoreCoalBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.*;
-import net.minecraft.world.LightType;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.common.util.Constants;
+import com.yuo.morecoal.blocks.AirLight;
+import com.yuo.morecoal.blocks.ModBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-//在周围？个区块范围放置火把或光源
-public class SuperLampTile extends TileEntity implements ITickableTileEntity {
+public class SuperLampTile extends BlockEntity {
 
-    private static final List<BlockPos> childLights = new ArrayList<>(); //光源坐标列表
-    private final int radius = 32; //光源设置范围
+    private final List<BlockPos> childLights = new ArrayList<>();
+    private final int radius = 32;
 
-    public SuperLampTile() {
-        super(TileTypeRegistry.SUPER_LAMP_TILE.get());
+    public SuperLampTile(BlockPos pos, BlockState state) {
+        super(ModTiles.SUPER_LAMP_TILE.get(), pos, state);
     }
 
-    @Override
-    public void tick() {
-        if (world == null || world.isRemote) return;
-        if (!world.isNightTime()) return;
-        if (world.getGameTime() % 10 != 0) return; //每0.5秒运行一次
-        if (childLights.size() > 64) return;  //限制光源数量
+    public static void tick(Level level, BlockPos pos, BlockState state, SuperLampTile tile) {
+        if (level.isClientSide) return;
+        if (!level.isNight()) return;
+        if (level.getGameTime() % 10 != 0) return;
+        if (tile.childLights.size() > 64) return;
 
-        int diameter = radius * 2;
-        //随机生成一个坐标
-        int x = (radius - world.rand.nextInt(diameter)) + pos.getX();
-        int y = (radius - world.rand.nextInt(diameter)) + pos.getY();
-        int z = (radius - world.rand.nextInt(diameter)) + pos.getZ();
-        if (y < 3) y = 3; //最低高度
+        int diameter = tile.radius * 2;
+        int x = (tile.radius - level.random.nextInt(diameter)) + pos.getX();
+        int y = (tile.radius - level.random.nextInt(diameter)) + pos.getY();
+        int z = (tile.radius - level.random.nextInt(diameter)) + pos.getZ();
+        if (y < 3) y = 3;
 
-        BlockPos targetPos = new BlockPos(x, y, z);
-        BlockPos surfaceHeight = world.getHeight(Heightmap.Type.WORLD_SURFACE, targetPos);
-        if (targetPos.getY() > surfaceHeight.getY() + 4)
-            targetPos = surfaceHeight.up(4); //最高高度 世界表面高度加4
+        BlockPos target = new BlockPos(x, y, z);
+        BlockPos surface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, target);
+        if (target.getY() > surface.getY() + 4) {
+            target = surface.above(4);
+        }
 
-        //不能超过世界高度限制（建筑高度）
-        int worldHeightCap = world.getHeight();
-        if(targetPos.getY() > worldHeightCap)
-            targetPos = new BlockPos(targetPos.getX(), worldHeightCap - 1, targetPos.getZ());
+        int maxY = level.getMaxBuildHeight() - 1;
+        if (target.getY() > maxY) {
+            target = new BlockPos(target.getX(), maxY, target.getZ());
+        }
 
-        if(!world.isBlockLoaded(targetPos)) return; //区块是否加载
+        if (!level.isLoaded(target)) return;
 
-        if (world.isAirBlock(targetPos) && world.getLightFor(LightType.BLOCK, targetPos) < 5){ //亮度小于5
-            if(world.setBlockState(targetPos, MoreCoalBlocks.airLight.get().getDefaultState().with(AirLight.AGE, 0), 2)) {
-                childLights.add(targetPos);
-                markDirty();  //告知游戏保存数据
+        if (level.isEmptyBlock(target) && level.getBrightness(LightLayer.BLOCK, target) < 5) {
+            if (level.setBlock(target, ModBlocks.airLight.get().defaultBlockState()
+                    .setValue(AirLight.AGE, 0), 2)) {
+                tile.childLights.add(target);
+                tile.setChanged();
             }
         }
-
     }
 
-    @Override
-    public void read(BlockState blockState, CompoundNBT nbt) {
-        childLights.clear();
-        if(nbt.getTagId("lights") == Constants.NBT.TAG_INT_ARRAY) {
-            BlockPos origin = new BlockPos(nbt.getInt("x"), nbt.getInt("y"),nbt.getInt("z"));
-            int[] lightsEncoded = ((IntArrayNBT) nbt.get("lights")).getIntArray();
-            for(int encodedLight : lightsEncoded)
-                childLights.add(decodePosition(origin, encodedLight));
-        }
-        super.read(blockState, nbt);
-    }
-
-    @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        List<Integer> childLightsEncoded = new ArrayList<>(childLights.size());
-        for(BlockPos child : childLights)
-            childLightsEncoded.add(encodePosition(this.pos, child));
-        nbt.put("lights", new IntArrayNBT(childLightsEncoded));
-        return super.write(nbt);
-    }
-
-    //清除光源
     public void removeChildLights() {
-        if(world == null || world.isRemote) return;
-        for(BlockPos pos : childLights) {
-            world.setBlockState(pos, Blocks.AIR.getDefaultState());
-            if (world.getBlockState(pos).getBlock().equals(MoreCoalBlocks.airLight.get()))
-                world.removeBlock(pos, false);
+        if (level == null || level.isClientSide) return;
+        for (BlockPos pos : childLights) {
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            if (level.getBlockState(pos).is(ModBlocks.airLight.get())) {
+                level.removeBlock(pos, false);
+            }
         }
         childLights.clear();
     }
 
-    //加密坐标
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        List<Integer> encoded = new ArrayList<>(childLights.size());
+        for (BlockPos child : childLights) {
+            encoded.add(encodePosition(worldPosition, child));
+        }
+        tag.put("lights", new IntArrayTag(encoded));
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        childLights.clear();
+        if (tag.contains("lights", CompoundTag.TAG_INT_ARRAY)) {
+            BlockPos origin = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+            int[] encoded = tag.getIntArray("lights");
+            for (int value : encoded) {
+                childLights.add(decodePosition(origin, value));
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
+    }
+
     public static int encodePosition(BlockPos origin, BlockPos target) {
         int x = target.getX() - origin.getX();
         int y = target.getY() - origin.getY();
@@ -102,11 +112,10 @@ public class SuperLampTile extends TileEntity implements ITickableTileEntity {
         return ((x & 0xFF) << 16) + ((y & 0xFF) << 8) + (z & 0xFF);
     }
 
-    //解密坐标
     public static BlockPos decodePosition(BlockPos origin, int pos) {
-        int x = (byte)((pos >> 16) & 0xFF);
-        int y = (byte)((pos >> 8) & 0xFF);
-        int z = (byte)(pos & 0xFF);
-        return origin.add(x, y, z);
+        int x = (byte) ((pos >> 16) & 0xFF);
+        int y = (byte) ((pos >> 8) & 0xFF);
+        int z = (byte) (pos & 0xFF);
+        return origin.offset(x, y, z);
     }
 }

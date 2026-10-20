@@ -1,45 +1,43 @@
 package com.yuo.morecoal.items;
 
-import com.yuo.morecoal.Blocks.MoreCoalBlocks;
-import com.yuo.morecoal.tab.ModGroup;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import com.yuo.morecoal.blocks.ModBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class AirLightItem extends Item {
     public AirLightItem() {
-        super(new Properties().group(ModGroup.myGroup));
+        super(new Properties());
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("morecoal.text.itemInfo.air_light"));
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.translatable("morecoal.text.itemInfo.air_light"));
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
-        Direction face = context.getFace();
+    public InteractionResult useOn(UseOnContext context) {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Direction face = context.getClickedFace();
         if (face == Direction.UP){
             BlockState state = world.getBlockState(pos);
-            BlockState blockState = world.getBlockState(pos.up());
-            if (!state.getMaterial().isLiquid() && blockState.getMaterial().isReplaceable() && state.getMaterial().isSolid()){
-                if (world.setBlockState(pos.up(), MoreCoalBlocks.airLight.get().getDefaultState(), 2))
-                    return ActionResultType.SUCCESS;
+            BlockState blockState = world.getBlockState(pos.above());
+            if (!state.liquid() && blockState.canBeReplaced() && state.isSolid()){
+                if (world.setBlockAndUpdate(pos.above(), ModBlocks.airLight.get().defaultBlockState()))
+                    return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return super.useOn(context);
     }
 }

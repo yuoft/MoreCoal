@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "morecoal:more_coal_ore",
+    "morecoal:more_coal_deep_ore",
+    "morecoal:nether_more_coal_ore",
+    "morecoal:end_more_coal_ore"
+  ]
+}

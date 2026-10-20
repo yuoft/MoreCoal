@@ -11,35 +11,28 @@ public class ModBlocks {
 	//同物品
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MoreCoal.MOD_ID);
 
-//    public static RegistryObject<Block> coalCrop = BLOCKS.register("coal_crop", () -> new Block());
-//高级煤炭块
-public static RegistryObject<Block> ironCoalBlock = BLOCKS.register("iron_coal_block",
-		() -> new MoreCoalBlock(Material.ROCK, 1, ToolType.PICKAXE, 5, 5));
-	public static RegistryObject<Block> goldCoalBlock = BLOCKS.register("gold_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 2, ToolType.PICKAXE, 6, 6));
-	public static RegistryObject<Block> diamondCoalBlock = BLOCKS.register("diamond_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 3, ToolType.PICKAXE, 10, 10));
-	public static RegistryObject<Block> netheriteCoalBlock = BLOCKS.register("netherite_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 4, ToolType.PICKAXE, 15, 15));
-	public static RegistryObject<Block> lapisCoalBlock = BLOCKS.register("lapis_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 2, ToolType.PICKAXE, 7, 7));
-	public static RegistryObject<Block> redstoneCoalBlock = BLOCKS.register("redstone_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 2, ToolType.PICKAXE, 7, 7));
-	public static RegistryObject<Block> emeraldCoalBlock = BLOCKS.register("emerald_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 3, ToolType.PICKAXE, 11, 11));
-	public static RegistryObject<Block> lavaCoalBlock = BLOCKS.register("lava_coal_block",
-			() -> new MoreCoalBlock(Material.ROCK, 1, ToolType.PICKAXE, 3, 3));
+	//高级煤炭块
+	public static RegistryObject<Block> ironCoalBlock = BLOCKS.register("iron_coal_block", () -> new MoreCoalBlock(5, 9, SoundType.STONE));
+	public static RegistryObject<Block> goldCoalBlock = BLOCKS.register("gold_coal_block", () -> new MoreCoalBlock(6, 10, SoundType.STONE));
+	public static RegistryObject<Block> diamondCoalBlock = BLOCKS.register("diamond_coal_block", () -> new MoreCoalBlock(10, 15, SoundType.STONE));
+	public static RegistryObject<Block> netheriteCoalBlock = BLOCKS.register("netherite_coal_block", () -> new MoreCoalBlock(15, 20, SoundType.STONE));
+	public static RegistryObject<Block> lapisCoalBlock = BLOCKS.register("lapis_coal_block", () -> new MoreCoalBlock(7, 12, SoundType.STONE));
+	public static RegistryObject<Block> redstoneCoalBlock = BLOCKS.register("redstone_coal_block", () -> new MoreCoalBlock(7, 11, SoundType.STONE));
+	public static RegistryObject<Block> emeraldCoalBlock = BLOCKS.register("emerald_coal_block", () -> new MoreCoalBlock(11, 15, SoundType.STONE));
+	public static RegistryObject<Block> lavaCoalBlock = BLOCKS.register("lava_coal_block", () -> new MoreCoalBlock(3, 8, SoundType.STONE));
 
 	//重力方块
 	public static RegistryObject<Block> fallBlock = BLOCKS.register("fall_block", FallBlock::new);
 
 	//混合煤炭矿石
 	public static RegistryObject<Block> moreCoalOre = BLOCKS.register("more_coal_ore",
-			() -> new MoreCoalOre(Material.ROCK, 2, ToolType.PICKAXE, 5, 5, 5));
-	public static RegistryObject<Block> endMoreCoalOre = BLOCKS.register("end_more_coal_ore",
-			() -> new MoreCoalOre(Material.ROCK, 2, ToolType.PICKAXE, 6, 6, 5));
+			() -> new MoreCoalOre(5, 10, 2, 0,4));
+	public static RegistryObject<Block> moreCoalDeepOre = BLOCKS.register("more_coal_deep_ore",
+			() -> new MoreCoalOre(6, 11, 2, 0,6));
 	public static RegistryObject<Block> netherMoreCoalOre = BLOCKS.register("nether_more_coal_ore",
-			() -> new MoreCoalOre(Material.ROCK, 2, ToolType.PICKAXE, 7, 7, 5));
+			() -> new MoreCoalOre(7, 12, 2, 1,5));
+	public static RegistryObject<Block> endMoreCoalOre = BLOCKS.register("end_more_coal_ore",
+			() -> new MoreCoalOre(6, 11, 2, 2,6));
 
 	//能量核心
 	public static RegistryObject<Block> energyBlock = BLOCKS.register("energy_block", EnergyBlock::new);

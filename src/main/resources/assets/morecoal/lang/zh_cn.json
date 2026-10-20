@@ -43,6 +43,7 @@
 	"block.morecoal.lava_coal_block": "熔岩煤炭块",
 	"block.morecoal.fall_block": "重力方块",
 	"block.morecoal.more_coal_ore": "混合煤炭矿",
+	"block.morecoal.more_coal_deep_ore": "深层混合煤炭矿",
 	"block.morecoal.nether_more_coal_ore": "下界混合煤炭矿",
 	"block.morecoal.end_more_coal_ore": "末地混合煤炭矿",
 	"block.morecoal.energy_block": "能源方块",

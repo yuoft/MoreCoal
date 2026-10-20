@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "morecoal:iron_coal_block",
+    "morecoal:gold_coal_block",
+    "morecoal:diamond_coal_block",
+    "morecoal:netherite_coal_block",
+    "morecoal:lapis_coal_block",
+    "morecoal:redstone_coal_block",
+    "morecoal:emerald_coal_block",
+    "morecoal:lava_coal_block",
+
+    "morecoal:more_coal_ore",
+    "morecoal:more_coal_deep_ore",
+    "morecoal:nether_more_coal_ore",
+    "morecoal:end_more_coal_ore",
+
+    "morecoal:fall_block",
+    "morecoal:energy_block",
+    "morecoal:super_lamp",
+    "morecoal:torch_placer"
+  ]
+}

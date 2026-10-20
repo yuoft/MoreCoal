@@ -12,9 +12,9 @@ import net.minecraftforge.registries.RegistryObject;
 //创造模式物品栏 实例化
 public class ModTabs {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MoreCoal.MOD_ID);
-	public static final RegistryObject<CreativeModeTab> Medicine_TAB = TABS.register(MoreCoal.MOD_ID + "_tab", () -> CreativeModeTab.builder()
+	public static final RegistryObject<CreativeModeTab> MOD_TAB = TABS.register(MoreCoal.MOD_ID + "_tab", () -> CreativeModeTab.builder()
 			.title(Component.translatable("itemGroup.tab.medicine"))
-			.icon(() -> ModItems.drugBottle.get().getDefaultInstance())
+			.icon(() -> ModItems.diamondCoal.get().getDefaultInstance())
 			.displayItems((parameters, output) -> {
 				for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {
 					output.accept(new ItemStack(entry.get()));
